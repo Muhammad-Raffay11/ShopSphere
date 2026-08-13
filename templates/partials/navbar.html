@@ -1,0 +1,450 @@
+<nav class="navbar navbar-expand-lg navbar-dark shop-navbar">
+
+    <div class="container">
+
+        <!-- Brand -->
+        <a
+            class="navbar-brand fw-bold d-flex align-items-center"
+            href="{% url 'catalog:product_list' %}"
+        >
+            <i class="bi bi-shop me-2"></i>
+            <span>ShopSphere</span>
+        </a>
+
+
+        <!-- Mobile Toggle -->
+        <button
+            class="navbar-toggler border-0 shadow-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <!-- Navbar Content -->
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav"
+        >
+
+            <!-- Left Navigation -->
+            <ul class="navbar-nav me-lg-3">
+
+                <!-- Home -->
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{% url 'catalog:product_list' %}"
+                    >
+                        <i class="bi bi-house-door me-1"></i>
+                        Home
+                    </a>
+
+                </li>
+
+
+                <!-- Wishlist -->
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{% url 'wishlist:detail' %}"
+                    >
+                        <i class="bi bi-heart me-1"></i>
+                        Wishlist
+                    </a>
+
+                </li>
+
+
+                <!-- Cart -->
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link cart-nav-link"
+                        href="{% url 'cart:detail' %}"
+                    >
+
+                        <span class="cart-wrapper">
+
+                            <i class="bi bi-cart3 nav-icon"></i>
+
+                            {% if cart_count > 0 %}
+
+                                <span class="cart-badge">
+                                    {{ cart_count }}
+                                </span>
+
+                            {% endif %}
+
+                        </span>
+
+                        <span class="ms-1">
+                            Cart
+                        </span>
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+
+            <!-- Search -->
+            <form
+                class="d-flex navbar-search mx-lg-auto my-3 my-lg-0"
+                method="get"
+                action="{% url 'catalog:product_list' %}"
+            >
+
+                <div class="input-group">
+
+                    <input
+                        class="form-control"
+                        type="search"
+                        name="q"
+                        value="{{ request.GET.q|default:'' }}"
+                        placeholder="Search products..."
+                        aria-label="Search products"
+                    >
+
+                    <button
+                        class="btn btn-primary px-3"
+                        type="submit"
+                        aria-label="Search"
+                    >
+                        <i class="bi bi-search"></i>
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- Right Navigation -->
+            <ul class="navbar-nav ms-lg-3">
+
+                {% if user.is_authenticated %}
+
+                    <!-- Account -->
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="{% url 'accounts:dashboard' %}"
+                        >
+                            <i class="bi bi-person-circle me-1"></i>
+                            Account
+                        </a>
+
+                    </li>
+
+
+                    <!-- Orders -->
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="{% url 'orders:list' %}"
+                        >
+                            <i class="bi bi-box-seam me-1"></i>
+                            Orders
+                        </a>
+
+                    </li>
+
+                {% else %}
+
+                    <!-- Login -->
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link"
+                                href="{% url 'accounts:login' %}"
+                            >
+                                <i class="bi bi-person me-1"></i>
+                                Login
+                            </a>
+
+                        </li>
+
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<style>
+
+    /* ========================= */
+    /* NAVBAR */
+    /* ========================= */
+
+    .shop-navbar {
+
+        background: #212437;
+
+        padding: 0.75rem 0;
+
+        box-shadow:
+            0 2px 10px rgba(0, 0, 0, 0.12);
+
+    }
+
+
+    /* ========================= */
+    /* BRAND */
+    /* ========================= */
+
+    .shop-navbar .navbar-brand {
+
+        font-size: 1.35rem;
+
+        letter-spacing: 0.2px;
+
+        white-space: nowrap;
+
+    }
+
+
+    .shop-navbar .navbar-brand i {
+
+        font-size: 1.25rem;
+
+    }
+
+
+    /* ========================= */
+    /* NAV LINKS */
+    /* ========================= */
+
+    .shop-navbar .nav-link {
+
+        color: rgba(255, 255, 255, 0.85);
+
+        font-weight: 500;
+
+        padding: 0.55rem 0.75rem;
+
+        border-radius: 8px;
+
+        transition:
+            color 0.2s ease,
+            background-color 0.2s ease,
+            transform 0.2s ease;
+
+    }
+
+
+    .shop-navbar .nav-link:hover {
+
+        color: #ffffff;
+
+        background: rgba(255, 255, 255, 0.08);
+
+        transform: translateY(-1px);
+
+    }
+
+
+    .shop-navbar .nav-link i {
+
+        font-size: 1rem;
+
+    }
+
+
+    /* ========================= */
+    /* SEARCH */
+    /* ========================= */
+
+    .navbar-search {
+
+        width: min(420px, 100%);
+
+    }
+
+
+    .navbar-search .form-control {
+
+        border: none;
+
+        box-shadow: none;
+
+        min-height: 42px;
+
+        border-radius: 8px 0 0 8px;
+
+    }
+
+
+    .navbar-search .form-control:focus {
+
+        box-shadow:
+            0 0 0 3px rgba(13, 110, 253, 0.18);
+
+    }
+
+
+    .navbar-search .btn {
+
+        min-width: 48px;
+
+        border-radius: 0 8px 8px 0;
+
+    }
+
+
+    /* ========================= */
+    /* CART */
+    /* ========================= */
+
+    .cart-wrapper {
+
+        position: relative;
+
+        display: inline-flex;
+
+        align-items: center;
+
+    }
+
+
+    .cart-wrapper .nav-icon {
+
+        font-size: 1.05rem;
+
+    }
+
+
+    .cart-badge {
+
+        position: absolute;
+
+        top: -9px;
+
+        right: -10px;
+
+        min-width: 17px;
+
+        height: 17px;
+
+        padding: 0 4px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 50px;
+
+        background: #dc3545;
+
+        color: #ffffff;
+
+        font-size: 0.65rem;
+
+        font-weight: 700;
+
+        line-height: 1;
+
+        border: 2px solid #212437;
+
+    }
+
+
+    /* ========================= */
+    /* MOBILE */
+    /* ========================= */
+
+    @media (max-width: 991.98px) {
+
+        .shop-navbar {
+
+            padding: 0.7rem 0;
+
+        }
+
+
+        .shop-navbar .navbar-collapse {
+
+            padding-top: 0.75rem;
+
+        }
+
+
+        .shop-navbar .nav-link {
+
+            padding: 0.7rem 0.75rem;
+
+            margin-bottom: 2px;
+
+        }
+
+
+        .navbar-search {
+
+            width: 100%;
+
+            margin: 0.75rem 0 !important;
+
+        }
+
+
+        .shop-navbar .navbar-nav {
+
+            width: 100%;
+
+        }
+
+
+        .shop-navbar .navbar-toggler {
+
+            padding: 0.35rem 0.5rem;
+
+        }
+
+    }
+
+
+    /* ========================= */
+    /* SMALL MOBILE */
+    /* ========================= */
+
+    @media (max-width: 575.98px) {
+
+        .shop-navbar .navbar-brand {
+
+            font-size: 1.15rem;
+
+        }
+
+
+        .shop-navbar .navbar-brand i {
+
+            font-size: 1.1rem;
+
+        }
+
+
+        .navbar-search .form-control {
+
+            min-height: 40px;
+
+        }
+
+    }
+
+</style>

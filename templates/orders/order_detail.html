@@ -1,0 +1,500 @@
+{% extends "base.html" %}
+
+{% block title %}
+Order {{ order.order_number }} | ShopSphere
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+
+    <div class="d-flex flex-column flex-md-row
+                justify-content-between
+                align-items-md-center
+                gap-3
+                mb-4">
+
+        <div>
+
+            <div class="d-flex align-items-center gap-2 mb-2">
+
+                <a
+                    href="{% url 'orders:list' %}"
+                    class="text-decoration-none text-muted"
+                >
+                    <i class="bi bi-arrow-left"></i>
+                    My Orders
+                </a>
+
+            </div>
+
+            <h2 class="fw-bold mb-1">
+                Order Details
+            </h2>
+
+            <p class="text-muted mb-0">
+                {{ order.order_number }}
+            </p>
+
+        </div>
+
+
+        <!-- Order Status -->
+
+        {% if order.status == "pending" %}
+
+            <span
+                class="badge
+                       bg-warning-subtle
+                       text-warning-emphasis
+                       px-3 py-2 fs-6"
+            >
+                <i class="bi bi-clock me-1"></i>
+                {{ order.get_status_display }}
+            </span>
+
+        {% elif order.status == "confirmed" %}
+
+            <span
+                class="badge
+                       bg-success-subtle
+                       text-success
+                       px-3 py-2 fs-6"
+            >
+                <i class="bi bi-check-circle me-1"></i>
+                {{ order.get_status_display }}
+            </span>
+
+        {% elif order.status == "shipped" %}
+
+            <span
+                class="badge
+                       bg-info-subtle
+                       text-info-emphasis
+                       px-3 py-2 fs-6"
+            >
+                <i class="bi bi-truck me-1"></i>
+                {{ order.get_status_display }}
+            </span>
+
+        {% elif order.status == "delivered" %}
+
+            <span
+                class="badge
+                       bg-success-subtle
+                       text-success
+                       px-3 py-2 fs-6"
+            >
+                <i class="bi bi-box-seam me-1"></i>
+                {{ order.get_status_display }}
+            </span>
+
+        {% elif order.status == "cancelled" %}
+
+            <span
+                class="badge
+                       bg-danger-subtle
+                       text-danger
+                       px-3 py-2 fs-6"
+            >
+                <i class="bi bi-x-circle me-1"></i>
+                {{ order.get_status_display }}
+            </span>
+
+        {% else %}
+
+            <span
+                class="badge
+                       bg-secondary-subtle
+                       text-secondary
+                       px-3 py-2 fs-6"
+            >
+                {{ order.get_status_display }}
+            </span>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+        <!-- ========================= -->
+        <!-- ORDER ITEMS -->
+        <!-- ========================= -->
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-4">
+
+                        <i class="bi bi-bag-check text-primary me-2"></i>
+
+                        Order Items
+
+                    </h4>
+
+
+                    {% for item in order.items.all %}
+
+                    <div
+                        class="d-flex
+                               align-items-center
+                               justify-content-between
+                               gap-3
+                               py-3
+                               {% if not forloop.last %}
+                                   border-bottom
+                               {% endif %}"
+                    >
+
+                        <!-- Product -->
+
+                        <div class="d-flex align-items-center gap-3
+                                    min-width-0">
+
+                            <!-- Product Icon -->
+
+                            <div
+                                class="d-flex
+                                       align-items-center
+                                       justify-content-center
+                                       rounded-3
+                                       bg-light
+                                       text-primary
+                                       flex-shrink-0"
+                                style="
+                                    width: 55px;
+                                    height: 55px;
+                                "
+                            >
+
+                                <i
+                                    class="bi bi-box"
+                                    style="font-size: 24px;"
+                                ></i>
+
+                            </div>
+
+
+                            <!-- Product Information -->
+
+                            <div style="min-width: 0;">
+
+                                <h6
+                                    class="fw-semibold mb-1 text-truncate"
+                                >
+                                    {{ item.product_name }}
+                                </h6>
+
+                                <small class="text-muted">
+
+                                    Rs. {{ item.price }}
+
+                                    ×
+
+                                    {{ item.quantity }}
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Item Subtotal -->
+
+                        <strong
+                            class="text-nowrap"
+                        >
+                            Rs. {{ item.subtotal }}
+                        </strong>
+
+                    </div>
+
+                    {% endfor %}
+
+
+                    <!-- Price Summary -->
+
+                    <div class="mt-4 pt-3 border-top">
+
+                        <div
+                            class="d-flex
+                                   justify-content-between
+                                   mb-2"
+                        >
+
+                            <span class="text-muted">
+                                Subtotal
+                            </span>
+
+                            <span>
+                                Rs. {{ order.subtotal }}
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="d-flex
+                                   justify-content-between
+                                   mb-3"
+                        >
+
+                            <span class="text-muted">
+                                Shipping
+                            </span>
+
+                            <span>
+
+                                {% if order.shipping_cost %}
+
+                                    Rs. {{ order.shipping_cost }}
+
+                                {% else %}
+
+                                    <span class="text-success fw-semibold">
+                                        FREE
+                                    </span>
+
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="d-flex
+                                   justify-content-between
+                                   align-items-center"
+                        >
+
+                            <h5 class="fw-bold mb-0">
+                                Total
+                            </h5>
+
+                            <h4 class="fw-bold text-success mb-0">
+                                Rs. {{ order.total }}
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- DELIVERY INFORMATION -->
+        <!-- ========================= -->
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-4">
+
+                        <i class="bi bi-truck text-primary me-2"></i>
+
+                        Delivery
+
+                    </h4>
+
+
+                    <!-- Customer -->
+
+                    <div class="mb-3">
+
+                        <small class="text-muted d-block mb-1">
+                            Recipient
+                        </small>
+
+                        <strong>
+                            {{ order.full_name }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="mb-3">
+
+                        <small class="text-muted d-block mb-1">
+                            Phone
+                        </small>
+
+                        <span>
+                            <i class="bi bi-telephone me-1"></i>
+                            {{ order.phone }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- Address -->
+
+                    <div class="mb-4">
+
+                        <small class="text-muted d-block mb-1">
+                            Delivery Address
+                        </small>
+
+                        <span>
+
+                            {{ order.address }}<br>
+
+                            {{ order.city }}<br>
+
+                            {{ order.postal_code }}
+
+                        </span>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <!-- Payment -->
+
+                    <div class="mb-3">
+
+                        <small class="text-muted d-block mb-1">
+                            Payment Status
+                        </small>
+
+                        {% if order.payment_status == "paid" %}
+
+                            <span
+                                class="badge
+                                       bg-success-subtle
+                                       text-success
+                                       px-3 py-2"
+                            >
+                                <i class="bi bi-check-circle me-1"></i>
+                                Paid
+                            </span>
+
+                        {% elif order.payment_status == "failed" %}
+
+                            <span
+                                class="badge
+                                       bg-danger-subtle
+                                       text-danger
+                                       px-3 py-2"
+                            >
+                                <i class="bi bi-x-circle me-1"></i>
+                                Failed
+                            </span>
+
+                        {% elif order.payment_status == "refunded" %}
+
+                            <span
+                                class="badge
+                                       bg-warning-subtle
+                                       text-warning-emphasis
+                                       px-3 py-2"
+                            >
+                                <i class="bi bi-arrow-counterclockwise me-1"></i>
+                                Refunded
+                            </span>
+
+                        {% else %}
+
+                            <span
+                                class="badge
+                                       bg-warning-subtle
+                                       text-warning-emphasis
+                                       px-3 py-2"
+                            >
+                                <i class="bi bi-clock me-1"></i>
+                                Pending
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Order Status -->
+
+                    <div class="mb-4">
+
+                        <small class="text-muted d-block mb-1">
+                            Order Status
+                        </small>
+
+                        <strong>
+                            {{ order.get_status_display }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Cancel -->
+
+                    {% if order.status == "pending" or order.status == "confirmed" %}
+
+                        <form
+                            method="post"
+                            action="{% url 'orders:cancel' order.order_number %}"
+                            onsubmit="return confirm('Are you sure you want to cancel this order?');"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="btn btn-outline-danger w-100"
+                            >
+
+                                <i class="bi bi-x-circle me-2"></i>
+
+                                Cancel Order
+
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Back to Orders -->
+
+            <a
+                href="{% url 'orders:list' %}"
+                class="btn btn-outline-secondary w-100 mt-3"
+            >
+
+                <i class="bi bi-arrow-left me-2"></i>
+
+                Back to My Orders
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

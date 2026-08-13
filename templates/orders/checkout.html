@@ -1,0 +1,607 @@
+{% extends "base.html" %}
+
+{% block title %}
+Checkout | ShopSphere
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4 py-lg-5">
+
+    <!-- Page Header -->
+    <div class="mb-4">
+
+        <h2 class="fw-bold mb-1">
+            <i class="bi bi-credit-card me-2"></i>
+            Checkout
+        </h2>
+
+        <p class="text-muted mb-0">
+            Complete your delivery details and choose your payment method.
+        </p>
+
+    </div>
+
+
+    {% if error %}
+
+        <div
+            class="alert alert-danger alert-dismissible fade show"
+            role="alert"
+        >
+
+            <i class="bi bi-exclamation-triangle me-2"></i>
+
+            {{ error }}
+
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+            ></button>
+
+        </div>
+
+    {% endif %}
+
+
+    <div class="row g-4">
+
+        <!-- ================================= -->
+        <!-- DELIVERY + PAYMENT -->
+        <!-- ================================= -->
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4 p-lg-5">
+
+                    <!-- Section Header -->
+                    <div class="d-flex align-items-center mb-4">
+
+                        <div
+                            class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center me-3"
+                            style="width: 45px; height: 45px;"
+                        >
+                            <i class="bi bi-truck fs-5"></i>
+                        </div>
+
+                        <div>
+
+                            <h4 class="fw-bold mb-0">
+                                Delivery Information
+                            </h4>
+
+                            <small class="text-muted">
+                                Where should we deliver your order?
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+
+                        <!-- Full Name -->
+
+                        <div class="mb-3">
+
+                            <label
+                                class="form-label fw-semibold"
+                                for="full_name"
+                            >
+                                Full Name
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-person"></i>
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="full_name"
+                                    name="full_name"
+                                    class="form-control"
+                                    placeholder="Enter your full name"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Phone -->
+
+                        <div class="mb-3">
+
+                            <label
+                                class="form-label fw-semibold"
+                                for="phone"
+                            >
+                                Phone Number
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-light">
+                                    <i class="bi bi-telephone"></i>
+                                </span>
+
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    class="form-control"
+                                    placeholder="03XX XXXXXXX"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Address -->
+
+                        <div class="mb-3">
+
+                            <label
+                                class="form-label fw-semibold"
+                                for="address"
+                            >
+                                Delivery Address
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-light align-items-start pt-2">
+                                    <i class="bi bi-geo-alt"></i>
+                                </span>
+
+                                <textarea
+                                    id="address"
+                                    name="address"
+                                    class="form-control"
+                                    rows="3"
+                                    placeholder="Enter your complete delivery address"
+                                    required
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- City + Postal Code -->
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                    for="city"
+                                >
+                                    City
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-building"></i>
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        id="city"
+                                        name="city"
+                                        class="form-control"
+                                        placeholder="City"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6 mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                    for="postal_code"
+                                >
+                                    Postal Code
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-mailbox"></i>
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        id="postal_code"
+                                        name="postal_code"
+                                        class="form-control"
+                                        placeholder="Postal code"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ================================= -->
+                        <!-- PAYMENT -->
+                        <!-- ================================= -->
+
+                        <div class="mt-4 pt-3 border-top">
+
+                            <div class="d-flex align-items-center mb-3">
+
+                                <div
+                                    class="rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center me-3"
+                                    style="width: 42px; height: 42px;"
+                                >
+                                    <i class="bi bi-wallet2"></i>
+                                </div>
+
+                                <div>
+
+                                    <h5 class="fw-bold mb-0">
+                                        Payment Method
+                                    </h5>
+
+                                    <small class="text-muted">
+                                        Choose how you want to pay.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Cash on Delivery -->
+
+                            <label
+                                for="payment_cod"
+                                class="payment-option d-flex align-items-center border rounded-3 p-3 mb-3"
+                                style="cursor: pointer;"
+                            >
+
+                                <input
+                                    class="form-check-input flex-shrink-0 me-3"
+                                    type="radio"
+                                    name="payment_method"
+                                    id="payment_cod"
+                                    value="cod"
+                                    checked
+                                >
+
+                                <div class="flex-grow-1">
+
+                                    <div class="fw-semibold">
+
+                                        <i class="bi bi-cash-coin me-2 text-success"></i>
+
+                                        Cash on Delivery
+
+                                    </div>
+
+                                    <small class="text-muted">
+                                        Pay when your order is delivered.
+                                    </small>
+
+                                </div>
+
+                            </label>
+
+
+                            <!-- Stripe -->
+
+                            <label
+                                for="payment_stripe"
+                                class="payment-option d-flex align-items-center border rounded-3 p-3"
+                                style="cursor: pointer;"
+                            >
+
+                                <input
+                                    class="form-check-input flex-shrink-0 me-3"
+                                    type="radio"
+                                    name="payment_method"
+                                    id="payment_stripe"
+                                    value="stripe"
+                                >
+
+                                <div class="flex-grow-1">
+
+                                    <div class="fw-semibold">
+
+                                        <i class="bi bi-credit-card me-2 text-primary"></i>
+
+                                        Online Payment
+
+                                    </div>
+
+                                    <small class="text-muted">
+                                        Pay securely online using Stripe.
+                                    </small>
+
+                                </div>
+
+                                <i class="bi bi-shield-check text-success fs-5"></i>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- Place Order -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-lg w-100 mt-4"
+                        >
+
+                            <i class="bi bi-lock-fill me-2"></i>
+
+                            Place Order
+
+                        </button>
+
+
+                        <div class="text-center mt-3">
+
+                            <small class="text-muted">
+
+                                <i class="bi bi-shield-check me-1"></i>
+
+                                Your information is securely handled.
+
+                            </small>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================= -->
+        <!-- ORDER SUMMARY -->
+        <!-- ================================= -->
+
+        <div class="col-lg-5">
+
+            <div
+                class="card border-0 shadow-sm"
+                style="position: sticky; top: 20px;"
+            >
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center mb-4">
+
+                        <div
+                            class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center me-3"
+                            style="width: 45px; height: 45px;"
+                        >
+                            <i class="bi bi-receipt fs-5"></i>
+                        </div>
+
+                        <div>
+
+                            <h4 class="fw-bold mb-0">
+                                Order Summary
+                            </h4>
+
+                            <small class="text-muted">
+                                Review your order
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Products -->
+
+                    <div class="mb-3">
+
+                        {% for item in items %}
+
+                            <div
+                                class="d-flex align-items-center py-3 border-bottom"
+                            >
+
+                                <!-- Product Image -->
+
+                                <div
+                                    class="bg-light rounded d-flex align-items-center justify-content-center flex-shrink-0 me-3"
+                                    style="
+                                        width: 65px;
+                                        height: 65px;
+                                    "
+                                >
+
+                                    {% if item.product.image %}
+
+                                        <img
+                                            src="{{ item.product.image.url }}"
+                                            alt="{{ item.product.name }}"
+                                            style="
+                                                width: 100%;
+                                                height: 100%;
+                                                object-fit: contain;
+                                                padding: 5px;
+                                            "
+                                        >
+
+                                    {% else %}
+
+                                        <i class="bi bi-image text-muted"></i>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <!-- Product Info -->
+
+                                <div class="flex-grow-1">
+
+                                    <div class="fw-semibold">
+                                        {{ item.product.name }}
+                                    </div>
+
+                                    <small class="text-muted">
+                                        Qty: {{ item.quantity }}
+                                    </small>
+
+                                </div>
+
+
+                                <!-- Price -->
+
+                                <div class="fw-semibold ms-2">
+
+                                    Rs. {{ item.subtotal }}
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- Subtotal -->
+
+                    <div
+                        class="d-flex justify-content-between mb-3"
+                    >
+
+                        <span class="text-muted">
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            Rs. {{ subtotal }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Shipping -->
+
+                    <div
+                        class="d-flex justify-content-between mb-3"
+                    >
+
+                        <span class="text-muted">
+                            Shipping
+                        </span>
+
+                        <strong class="text-success">
+
+                            {% if shipping_cost %}
+
+                                Rs. {{ shipping_cost }}
+
+                            {% else %}
+
+                                FREE
+
+                            {% endif %}
+
+                        </strong>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <!-- Total -->
+
+                    <div
+                        class="d-flex justify-content-between align-items-center"
+                    >
+
+                        <span class="fs-5 fw-bold">
+                            Total
+                        </span>
+
+                        <span class="fs-4 fw-bold text-success">
+                            Rs. {{ total }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- Benefits -->
+
+                    <div class="bg-light rounded-3 p-3 mt-4">
+
+                        <div class="d-flex align-items-center mb-2">
+
+                            <i class="bi bi-truck text-primary me-2"></i>
+
+                            <small>
+                                Free shipping on your order
+                            </small>
+
+                        </div>
+
+                        <div class="d-flex align-items-center mb-2">
+
+                            <i class="bi bi-shield-check text-success me-2"></i>
+
+                            <small>
+                                Secure checkout
+                            </small>
+
+                        </div>
+
+                        <div class="d-flex align-items-center">
+
+                            <i class="bi bi-headset text-primary me-2"></i>
+
+                            <small>
+                                Customer support available
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

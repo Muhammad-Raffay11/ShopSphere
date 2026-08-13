@@ -1,0 +1,491 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login | ShopSphere
+{% endblock %}
+
+{% block content %}
+
+<div class="login-page">
+
+    <div class="row justify-content-center">
+
+        <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+
+            <!-- Login Card -->
+            <div class="card login-card border-0 shadow-lg">
+
+                <div class="card-body p-4 p-md-5">
+
+                    <!-- Logo / Heading -->
+                    <div class="text-center mb-4">
+
+                        <div class="login-icon mb-3">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+
+                        <h2 class="fw-bold mb-1">
+                            Welcome Back
+                        </h2>
+
+                        <p class="text-muted mb-0">
+                            Login to your ShopSphere account
+                        </p>
+
+                    </div>
+
+
+                    <!-- Login Errors -->
+                    {% if form.non_field_errors %}
+
+                        <div
+                            class="alert alert-danger"
+                            role="alert"
+                        >
+
+                            <i class="bi bi-exclamation-circle me-2"></i>
+
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- Login Form -->
+                    <form method="post" novalidate>
+
+                        {% csrf_token %}
+
+
+                        <!-- Username -->
+                        <div class="mb-3">
+
+                            <label
+                                for="{{ form.username.id_for_label }}"
+                                class="form-label fw-semibold"
+                            >
+                                Username
+                            </label>
+
+                            <div class="input-group login-input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-person"></i>
+                                </span>
+
+                                {{ form.username }}
+
+                            </div>
+
+
+                            {% if form.username.errors %}
+
+                                <div class="text-danger small mt-1">
+
+                                    {% for error in form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Password -->
+                        <div class="mb-4">
+
+                            <label
+                                for="{{ form.password.id_for_label }}"
+                                class="form-label fw-semibold"
+                            >
+                                Password
+                            </label>
+
+                            <div class="input-group login-input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+
+                                {{ form.password }}
+
+                                <button
+                                    class="btn password-toggle"
+                                    type="button"
+                                    id="togglePassword"
+                                    aria-label="Show password"
+                                >
+                                    <i
+                                        class="bi bi-eye"
+                                        id="passwordIcon"
+                                    ></i>
+                                </button>
+
+                            </div>
+
+
+                            {% if form.password.errors %}
+
+                                <div class="text-danger small mt-1">
+
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Login Button -->
+                        <button
+                            type="submit"
+                            class="btn btn-primary login-button w-100"
+                        >
+
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                            Login
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- Register -->
+                    <div class="text-center mt-4">
+
+                        <span class="text-muted">
+                            Don't have an account?
+                        </span>
+
+                        <a
+                            href="{% url 'accounts:register' %}"
+                            class="register-link fw-semibold"
+                        >
+                            Create one
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Security Note -->
+            <div class="text-center mt-3">
+
+                <small class="text-muted">
+
+                    <i class="bi bi-shield-check me-1"></i>
+
+                    Your account information is secure.
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const passwordInput =
+            document.getElementById("id_password");
+
+        const toggleButton =
+            document.getElementById("togglePassword");
+
+        const passwordIcon =
+            document.getElementById("passwordIcon");
+
+
+        if (!passwordInput || !toggleButton) {
+            return;
+        }
+
+
+        toggleButton.addEventListener("click", function () {
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+                passwordIcon.classList.remove("bi-eye");
+
+                passwordIcon.classList.add("bi-eye-slash");
+
+                toggleButton.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
+
+            } else {
+
+                passwordInput.type = "password";
+
+                passwordIcon.classList.remove("bi-eye-slash");
+
+                passwordIcon.classList.add("bi-eye");
+
+                toggleButton.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
+
+            }
+
+        });
+
+    });
+
+</script>
+
+{% endblock %}
+
+
+<style>
+
+    /* ========================= */
+    /* LOGIN PAGE */
+    /* ========================= */
+
+    .login-page {
+
+        min-height: calc(100vh - 80px);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 3rem 0;
+
+    }
+
+
+    /* ========================= */
+    /* LOGIN CARD */
+    /* ========================= */
+
+    .login-card {
+
+        border-radius: 18px;
+
+        overflow: hidden;
+
+    }
+
+
+    /* ========================= */
+    /* LOGIN ICON */
+    /* ========================= */
+
+    .login-icon {
+
+        width: 72px;
+
+        height: 72px;
+
+        margin: 0 auto;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: rgba(13, 110, 253, 0.1);
+
+        color: #0d6efd;
+
+    }
+
+
+    .login-icon i {
+
+        font-size: 2.2rem;
+
+    }
+
+
+    /* ========================= */
+    /* INPUTS */
+    /* ========================= */
+
+    .login-input-group {
+
+        border-radius: 9px;
+
+        overflow: hidden;
+
+    }
+
+
+    .login-input-group .input-group-text {
+
+        background: #f8f9fa;
+
+        border-right: 0;
+
+        color: #6c757d;
+
+        min-width: 46px;
+
+        justify-content: center;
+
+    }
+
+
+    .login-input-group .form-control {
+
+        border-left: 0;
+
+        min-height: 46px;
+
+        box-shadow: none;
+
+    }
+
+
+    .login-input-group .form-control:focus {
+
+        border-color: #dee2e6;
+
+        box-shadow: none;
+
+    }
+
+
+    .login-input-group:focus-within {
+
+        box-shadow:
+            0 0 0 3px rgba(13, 110, 253, 0.12);
+
+    }
+
+
+    /* ========================= */
+    /* PASSWORD TOGGLE */
+    /* ========================= */
+
+    .password-toggle {
+
+        background: #ffffff;
+
+        border: 1px solid #dee2e6;
+
+        border-left: 0;
+
+        color: #6c757d;
+
+        min-width: 46px;
+
+    }
+
+
+    .password-toggle:hover {
+
+        color: #0d6efd;
+
+        background: #ffffff;
+
+    }
+
+
+    /* ========================= */
+    /* LOGIN BUTTON */
+    /* ========================= */
+
+    .login-button {
+
+        min-height: 48px;
+
+        border-radius: 9px;
+
+        font-weight: 600;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+
+    }
+
+
+    .login-button:hover {
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 5px 15px rgba(13, 110, 253, 0.2);
+
+    }
+
+
+    /* ========================= */
+    /* REGISTER LINK */
+    /* ========================= */
+
+    .register-link {
+
+        color: #0d6efd;
+
+        text-decoration: none;
+
+        margin-left: 4px;
+
+    }
+
+
+    .register-link:hover {
+
+        text-decoration: underline;
+
+    }
+
+
+    /* ========================= */
+    /* MOBILE */
+    /* ========================= */
+
+    @media (max-width: 575.98px) {
+
+        .login-page {
+
+            min-height: auto;
+
+            padding: 2rem 0;
+
+        }
+
+
+        .login-card {
+
+            border-radius: 14px;
+
+        }
+
+    }
+
+</style>

@@ -1,0 +1,556 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | ShopSphere
+{% endblock %}
+
+{% block content %}
+
+<div class="py-4">
+
+    <!-- ========================= -->
+    <!-- DASHBOARD HEADER -->
+    <!-- ========================= -->
+
+    <div class="mb-4">
+
+        <h2 class="fw-bold mb-1">
+            Welcome, {{ request.user.first_name|default:request.user.username }}
+            👋
+        </h2>
+
+        <p class="text-muted mb-0">
+            Manage your ShopSphere account and orders.
+        </p>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- ACCOUNT OVERVIEW -->
+    <!-- ========================= -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- Orders -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card dashboard-card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="dashboard-icon bg-primary-subtle text-primary">
+
+                        <i class="bi bi-box-seam"></i>
+
+                    </div>
+
+                    <h6 class="text-muted mt-3 mb-1">
+                        My Orders
+                    </h6>
+
+                    <h3 class="fw-bold mb-3">
+                        {{ request.user.orders.count }}
+                    </h3>
+
+                    <a
+                        href="{% url 'orders:list' %}"
+                        class="text-decoration-none"
+                    >
+                        View Orders
+                        <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Cart -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card dashboard-card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="dashboard-icon bg-success-subtle text-success">
+
+                        <i class="bi bi-cart3"></i>
+
+                    </div>
+
+                    <h6 class="text-muted mt-3 mb-1">
+                        Cart Items
+                    </h6>
+
+                    <h3 class="fw-bold mb-3">
+                        {% if request.user.cart %}
+                            {{ request.user.cart.total_items }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </h3>
+
+                    <a
+                        href="{% url 'cart:detail' %}"
+                        class="text-decoration-none text-success"
+                    >
+                        View Cart
+                        <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Wishlist -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card dashboard-card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="dashboard-icon bg-danger-subtle text-danger">
+
+                        <i class="bi bi-heart"></i>
+
+                    </div>
+
+                    <h6 class="text-muted mt-3 mb-1">
+                        Wishlist
+                    </h6>
+
+                    <h3 class="fw-bold mb-3">
+                        {% if request.user.wishlist %}
+                            {{ request.user.wishlist.total_items }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </h3>
+
+                    <a
+                        href="{% url 'wishlist:detail' %}"
+                        class="text-decoration-none text-danger"
+                    >
+                        View Wishlist
+                        <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Account -->
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card dashboard-card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="dashboard-icon bg-warning-subtle text-warning">
+
+                        <i class="bi bi-person-circle"></i>
+
+                    </div>
+
+                    <h6 class="text-muted mt-3 mb-1">
+                        Account
+                    </h6>
+
+                    <h3 class="fw-bold mb-3">
+                        Active
+                    </h3>
+
+                    <span class="text-muted small">
+                        {{ request.user.username }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MAIN DASHBOARD CONTENT -->
+    <!-- ========================= -->
+
+    <div class="row g-4">
+
+
+        <!-- Account Information -->
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+
+                        <div>
+
+                            <h4 class="fw-bold mb-1">
+                                Account Information
+                            </h4>
+
+                            <p class="text-muted small mb-0">
+                                Your ShopSphere account details
+                            </p>
+
+                        </div>
+
+                        <i
+                            class="bi bi-person-vcard text-primary"
+                            style="font-size: 2rem;"
+                        ></i>
+
+                    </div>
+
+
+                    <div class="account-info-row">
+
+                        <div class="account-info-icon">
+                            <i class="bi bi-person"></i>
+                        </div>
+
+                        <div>
+
+                            <small class="text-muted d-block">
+                                Name
+                            </small>
+
+                            <strong>
+                                {{ request.user.first_name|default:"Not provided" }}
+                                {{ request.user.last_name }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="account-info-row">
+
+                        <div class="account-info-icon">
+                            <i class="bi bi-at"></i>
+                        </div>
+
+                        <div>
+
+                            <small class="text-muted d-block">
+                                Username
+                            </small>
+
+                            <strong>
+                                {{ request.user.username }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="account-info-row">
+
+                        <div class="account-info-icon">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+
+                        <div>
+
+                            <small class="text-muted d-block">
+                                Email
+                            </small>
+
+                            <strong>
+                                {{ request.user.email|default:"Not provided" }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Quick Actions -->
+
+        <div class="col-lg-5">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-1">
+                        Quick Actions
+                    </h4>
+
+                    <p class="text-muted small mb-4">
+                        Quickly access your ShopSphere features.
+                    </p>
+
+
+                    <a
+                        href="{% url 'orders:list' %}"
+                        class="dashboard-action"
+                    >
+
+                        <span class="action-icon bg-primary-subtle text-primary">
+                            <i class="bi bi-box-seam"></i>
+                        </span>
+
+                        <span class="flex-grow-1">
+
+                            <strong class="d-block">
+                                My Orders
+                            </strong>
+
+                            <small class="text-muted">
+                                View your order history
+                            </small>
+
+                        </span>
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'wishlist:detail' %}"
+                        class="dashboard-action"
+                    >
+
+                        <span class="action-icon bg-danger-subtle text-danger">
+                            <i class="bi bi-heart"></i>
+                        </span>
+
+                        <span class="flex-grow-1">
+
+                            <strong class="d-block">
+                                Wishlist
+                            </strong>
+
+                            <small class="text-muted">
+                                View saved products
+                            </small>
+
+                        </span>
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'cart:detail' %}"
+                        class="dashboard-action"
+                    >
+
+                        <span class="action-icon bg-success-subtle text-success">
+                            <i class="bi bi-cart3"></i>
+                        </span>
+
+                        <span class="flex-grow-1">
+
+                            <strong class="d-block">
+                                Shopping Cart
+                            </strong>
+
+                            <small class="text-muted">
+                                Review your cart
+                            </small>
+
+                        </span>
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </a>
+
+
+                    <a
+                        href="{% url 'accounts:logout' %}"
+                        class="dashboard-action text-danger"
+                    >
+
+                        <span class="action-icon bg-danger-subtle text-danger">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </span>
+
+                        <span class="flex-grow-1">
+
+                            <strong class="d-block">
+                                Logout
+                            </strong>
+
+                            <small class="text-muted">
+                                Sign out of your account
+                            </small>
+
+                        </span>
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- DASHBOARD CSS -->
+<!-- ========================= -->
+
+<style>
+
+    .dashboard-card {
+        border-radius: 14px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.10) !important;
+    }
+
+
+    .dashboard-icon {
+        width: 52px;
+        height: 52px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        font-size: 1.35rem;
+    }
+
+
+    .account-info-row {
+        display: flex;
+        align-items: center;
+
+        gap: 15px;
+
+        padding: 15px 0;
+
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .account-info-row:last-child {
+        border-bottom: none;
+    }
+
+
+    .account-info-icon {
+        width: 42px;
+        height: 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #f8f9fa;
+
+        color: #0d6efd;
+
+        flex-shrink: 0;
+    }
+
+
+    .dashboard-action {
+        display: flex;
+        align-items: center;
+
+        gap: 14px;
+
+        padding: 14px;
+
+        margin-bottom: 10px;
+
+        color: inherit;
+
+        text-decoration: none;
+
+        border-radius: 12px;
+
+        transition:
+            background-color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+
+    .dashboard-action:hover {
+        background-color: #f8f9fa;
+
+        transform: translateX(4px);
+    }
+
+
+    .action-icon {
+        width: 44px;
+        height: 44px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        flex-shrink: 0;
+    }
+
+
+    @media (max-width: 575.98px) {
+
+        .dashboard-card {
+            border-radius: 12px;
+        }
+
+        .dashboard-icon {
+            width: 46px;
+            height: 46px;
+        }
+
+        .account-info-row {
+            gap: 12px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}

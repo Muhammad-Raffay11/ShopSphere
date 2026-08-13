@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ product.name }} | ShopSphere
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'catalog:product_list' %}"
+                   class="text-decoration-none">
+                    Products
+                </a>
+            </li>
+
+            <li class="breadcrumb-item active">
+                {{ product.name }}
+            </li>
+        </ol>
+    </nav>
+
+
+    <div class="row g-5 align-items-start">
+
+        <!-- Product Image -->
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm product-image-card">
+
+                <div class="product-main-image">
+
+                    {% if product.image %}
+
+                        <img
+                            src="{{ product.image.url }}"
+                            alt="{{ product.name }}"
+                            class="img-fluid"
+                        >
+
+                    {% else %}
+
+                        <div class="no-image">
+                            <i class="bi bi-image"></i>
+                            <p class="mb-0">No image available</p>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Product Information -->
+        <div class="col-lg-6">
+
+            <div class="product-details">
+
+                <!-- Brand -->
+                <p class="text-muted mb-2">
+                    {{ product.brand }}
+                </p>
+
+
+                <!-- Product Name -->
+                <h1 class="fw-bold mb-3">
+                    {{ product.name }}
+                </h1>
+
+
+                <!-- Rating Placeholder -->
+                <div class="mb-3">
+
+                    <span class="text-warning">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star"></i>
+                    </span>
+
+                    <span class="text-muted ms-2">
+                        Product
+                    </span>
+
+                </div>
+
+
+                <!-- Price -->
+                <div class="mb-4">
+
+                    <span class="display-6 fw-bold text-success">
+                        Rs. {{ product.price }}
+                    </span>
+
+                </div>
+
+
+                <hr>
+
+
+                <!-- Stock Status -->
+                <div class="my-4">
+
+                    {% if product.stock_quantity > 0 and product.is_available %}
+
+                        <span class="badge bg-success-subtle text-success fs-6 px-3 py-2">
+                            <i class="bi bi-check-circle me-1"></i>
+                            In Stock
+                        </span>
+
+                        <p class="text-muted mt-2 mb-0">
+                            {{ product.stock_quantity }} units available
+                        </p>
+
+                    {% else %}
+
+                        <span class="badge bg-danger-subtle text-danger fs-6 px-3 py-2">
+                            <i class="bi bi-x-circle me-1"></i>
+                            Out of Stock
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Actions -->
+                <div class="d-grid gap-3">
+
+                    {% if product.stock_quantity > 0 and product.is_available %}
+
+                        <form
+                            method="post"
+                            action="{% url 'cart:add' product.id %}"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-lg w-100"
+                            >
+                                <i class="bi bi-cart-plus me-2"></i>
+                                Add to Cart
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary btn-lg w-100"
+                            disabled
+                        >
+                            <i class="bi bi-x-circle me-2"></i>
+                            Out of Stock
+                        </button>
+
+                    {% endif %}
+
+
+                    <!-- Wishlist -->
+                    <a
+                        href="{% url 'wishlist:add' product.id %}"
+                        class="btn btn-outline-danger btn-lg"
+                    >
+                        <i class="bi bi-heart me-2"></i>
+                        Add to Wishlist
+                    </a>
+
+                </div>
+
+
+                <hr class="my-4">
+
+
+                <!-- Product Highlights -->
+                <div class="row g-3">
+
+                    <div class="col-6">
+
+                        <div class="feature-box">
+
+                            <i class="bi bi-truck"></i>
+
+                            <div>
+                                <strong>Fast Delivery</strong>
+                                <small>
+                                    Reliable delivery
+                                </small>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-6">
+
+                        <div class="feature-box">
+
+                            <i class="bi bi-shield-check"></i>
+
+                            <div>
+                                <strong>Secure Payment</strong>
+                                <small>
+                                    Safe checkout
+                                </small>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-6">
+
+                        <div class="feature-box">
+
+                            <i class="bi bi-arrow-repeat"></i>
+
+                            <div>
+                                <strong>Easy Ordering</strong>
+                                <small>
+                                    Simple checkout
+                                </small>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-6">
+
+                        <div class="feature-box">
+
+                            <i class="bi bi-headset"></i>
+
+                            <div>
+                                <strong>Support</strong>
+                                <small>
+                                    Customer assistance
+                                </small>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
